@@ -55,7 +55,7 @@ public class LoginControlador extends HttpServlet {
             throws ServletException, IOException {
         try {
             String email = request.getParameter("email");
-            Usuario res = dao.findByEmail(email);
+            Usuario res = dao.findByEmail(email, "11111");
             
             request.setAttribute("usuario", res);
             request.getRequestDispatcher(SUCCESS).forward(request, response);

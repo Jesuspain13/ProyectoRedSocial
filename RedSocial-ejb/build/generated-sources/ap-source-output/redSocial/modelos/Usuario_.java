@@ -9,7 +9,7 @@ import redSocial.modelos.Grupos;
 import redSocial.modelos.Post;
 import redSocial.modelos.Privacidad;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-07T18:32:44")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-08T20:40:35")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 

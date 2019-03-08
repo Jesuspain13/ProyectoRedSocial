@@ -31,7 +31,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     
     public Usuario findByEmail(String email, String password) throws Exception {
         try {
-            String sql = "FROM Usuario u WHERE u.email=:email"
+            String sql = "FROM Usuario u WHERE u.email=:email "
                     + "AND u.password=:password";
             Usuario res = (Usuario) em.createQuery(sql)
                     .setParameter("email", email)
