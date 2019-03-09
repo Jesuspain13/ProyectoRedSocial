@@ -22,7 +22,7 @@ import redSocial.modelos.Usuario;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class LoginControlador extends HttpServlet {
 
-    private static final String SUCCESS = "/newjsp.jsp";
+    private static final String SUCCESS = "/perfil/perfil.jsp";
     
     @EJB
     private UsuarioFacade dao;
@@ -55,7 +55,8 @@ public class LoginControlador extends HttpServlet {
             throws ServletException, IOException {
         try {
             String email = request.getParameter("email");
-            Usuario res = dao.findByEmail(email, "11111");
+            String password = request.getParameter("password");
+            Usuario res = dao.findByEmail(email, password);
             
             request.setAttribute("usuario", res);
             request.getRequestDispatcher(SUCCESS).forward(request, response);
