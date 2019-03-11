@@ -1,3 +1,11 @@
 /nbproject/
+/build.xml
+/build/
 /RedSocial-ejb/nbproject/
+/RedSocial-ejb/build/
+/RedSocial-ejb/dist/
+/RedSocial-ejb/build.xml
 /RedSocial-war/nbproject/
+/RedSocial-war/build/
+/RedSocial-war/build.xml
+/RedSocial-war/dist/
