@@ -5,10 +5,12 @@
  */
 package redSocial.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import redSocial.modelos.Amistades;
+import redSocial.modelos.Usuario;
 
 /**
  *
@@ -29,4 +31,17 @@ public class AmistadesFacade extends AbstractFacade<Amistades> {
         super(Amistades.class);
     }
     
+    public List<Amistades> findByUsuario(Usuario idUsuarioABuscar) throws Exception {
+        try {
+            String query = "FROM Amistades a WHERE a.idUsuario1 = :usuario";
+            
+            List res = em.createQuery(query)
+                    .setParameter("usuario", idUsuarioABuscar)
+                    .getResultList();
+            
+            return res;
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
 }

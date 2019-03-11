@@ -22,7 +22,7 @@ import redSocial.modelos.Usuario;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class LoginControlador extends HttpServlet {
 
-    private static final String SUCCESS = "/perfil/perfil.jsp";
+    private static final String SUCCESS = "/PerfilUsuario";
     
     @EJB
     private UsuarioFacade dao;

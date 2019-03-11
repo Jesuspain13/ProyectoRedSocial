@@ -4,6 +4,7 @@
     Author     : Jesus
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +20,7 @@
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
   <!--<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
   
   <!-- Custom styles for this template -->
@@ -101,19 +103,21 @@
 
     <section class="resume-section p-3 p-lg-5 d-flex justify-content-center" id="experience">
       <div class="w-100">
-        <h2 class="mb-5">Experience</h2>
-
-        <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-          <div class="resume-content">
-            <h3 class="mb-0">Senior Web Developer</h3>
-            <div class="subheading mb-3">Intelitec Solutions</div>
-            <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
-          </div>
-          <div class="resume-date text-md-right">
-            <span class="text-primary">March 2013 - Present</span>
-          </div>
-        </div>
-
+        <h2 class="mb-5">Your friends</h2>
+        
+        <c:forEach items="${PostAmigos}" var="post">
+            <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+              <div class="resume-content">
+                <h3 class="mb-0">${post.idUsuario.nombre}</h3>
+                <div class="subheading mb-3">Último post</div>
+                <p>${post.contenido}</p>
+              </div>
+              <div class="resume-date text-md-right">
+                <span class="text-primary">${post.fecha}</span>
+              </div>
+            </div>
+        </c:forEach>
+<!--
         <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
           <div class="resume-content">
             <h3 class="mb-0">Web Developer</h3>
@@ -146,7 +150,7 @@
             <span class="text-primary">September 2008 - June 2010</span>
           </div>
         </div>
-
+-->
       </div>
 
     </section>
