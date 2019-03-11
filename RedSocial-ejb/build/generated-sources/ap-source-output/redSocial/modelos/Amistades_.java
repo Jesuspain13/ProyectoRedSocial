@@ -5,7 +5,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import redSocial.modelos.Usuario;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-11T09:45:17")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-11T16:08:39")
 @StaticMetamodel(Amistades.class)
 public class Amistades_ { 
 

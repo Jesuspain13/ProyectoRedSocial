@@ -34,7 +34,7 @@ public class AmistadesSvc {
             Amistades amistades;
             while(amistadesIterador.hasNext() && postsAMostrar.size() < 3) {            
                 amistades = (Amistades) amistadesIterador.next();
-                postsAMostrar.add(res.get(contador).getIdUsuario2()
+                postsAMostrar.add(amistades.getIdUsuario2()
                         .getPostList().get(0));
                 contador++;
             }
