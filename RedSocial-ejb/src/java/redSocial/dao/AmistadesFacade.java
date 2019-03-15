@@ -33,7 +33,8 @@ public class AmistadesFacade extends AbstractFacade<Amistades> {
     
     public List<Amistades> findByUsuario(Usuario idUsuarioABuscar) throws Exception {
         try {
-            String query = "FROM Amistades a WHERE a.idUsuario1 = :usuario";
+            String query = "FROM Amistades a WHERE a.idUsuario1 = :usuario "
+                    + "OR a.idUsuario2 = :usuario";
             
             List res = em.createQuery(query)
                     .setParameter("usuario", idUsuarioABuscar)

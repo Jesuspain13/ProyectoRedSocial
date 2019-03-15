@@ -29,7 +29,20 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
     
-    public Usuario findByEmail(String email, String password) throws Exception {
+    public Usuario findByEmail (String email) throws Exception {
+        try {
+            String sql = "FROM Usuario u WHERE u.email=:email ";
+            Usuario res = (Usuario) em.createQuery(sql)
+                    .setParameter("email", email)
+                    .getSingleResult();
+                    
+            return res;
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+    
+    public Usuario findByEmailAndPassword(String email, String password) throws Exception {
         try {
             String sql = "FROM Usuario u WHERE u.email=:email "
                     + "AND u.password=:password";

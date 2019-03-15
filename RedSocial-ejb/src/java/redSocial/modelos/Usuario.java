@@ -6,6 +6,7 @@
 package redSocial.modelos;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -40,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
 public class Usuario implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPublicador")
+    private Collection<ComentariosGrupos> comentariosGruposCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -207,6 +211,15 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "redSocial.modelos.Usuario[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ComentariosGrupos> getComentariosGruposCollection() {
+        return comentariosGruposCollection;
+    }
+
+    public void setComentariosGruposCollection(Collection<ComentariosGrupos> comentariosGruposCollection) {
+        this.comentariosGruposCollection = comentariosGruposCollection;
     }
     
 }

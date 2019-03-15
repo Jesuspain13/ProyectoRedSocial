@@ -5,10 +5,12 @@
  */
 package redSocial.dao;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import redSocial.modelos.Grupos;
+import redSocial.modelos.Usuario;
 
 /**
  *
@@ -28,5 +30,19 @@ public class GruposFacade extends AbstractFacade<Grupos> {
     public GruposFacade() {
         super(Grupos.class);
     }
+    
+    public List<Grupos> GroupList(Usuario user) throws Exception {
+
+        try {
+            String sql  = "SELECT DISTINCT g FROM Grupos g WHERE :user  NOT MEMBER OF g.usuarioList";
+            List<Grupos> res =  em.createQuery(sql).setParameter("user", user).getResultList();
+            return  res;
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+
+    }
+    
+    
     
 }
