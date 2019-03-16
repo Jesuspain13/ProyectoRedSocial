@@ -31,7 +31,7 @@ public class UpgradeableImpl implements Upgradeable {
     }
 
     @Override
-    public void updateUser(Usuario user, Object thingToAddOrDelete,int toDo) {
+    public void updateUser(Usuario user, Object thingToAddOrDelete, int toDo) {
         if (thingToAddOrDelete instanceof Amistades) {  
             UpgradeableImpl.updateRelationship(user, thingToAddOrDelete, toDo);
         } else if (thingToAddOrDelete instanceof Post) {
@@ -46,14 +46,25 @@ public class UpgradeableImpl implements Upgradeable {
     
     @Override
     public void updateGroupComponents(Grupos grupoaActualizar, Object thingToAddOrDelete, int toDo) {
-        Usuario newUserCasted = (Usuario) thingToAddOrDelete;        
-        List<Usuario> olderUsers = grupoaActualizar.getUsuarioList();
-        if (toDo == 1) {
-            olderUsers.add(newUserCasted);
-        } else if(toDo == 2) {
-            olderUsers.remove(newUserCasted);
+        if (thingToAddOrDelete instanceof Usuario) {
+            Usuario newUserCasted = (Usuario) thingToAddOrDelete;        
+            List<Usuario> olderUsers = grupoaActualizar.getUsuarioList();
+            if (toDo == 1) {
+                olderUsers.add(newUserCasted);
+            } else if(toDo == 2) {
+                olderUsers.remove(newUserCasted);
+            }
+            grupoaActualizar.setUsuarioList(olderUsers);
+        } else if (thingToAddOrDelete instanceof ComentariosGrupos){
+            ComentariosGrupos newCommentCasted = (ComentariosGrupos) thingToAddOrDelete;        
+            List<ComentariosGrupos> olderComments = grupoaActualizar.getComentariosList();
+            if (toDo == 1) {
+                olderComments.add(newCommentCasted);
+            } else if(toDo == 2) {
+                olderComments.remove(newCommentCasted);
+            }
+            grupoaActualizar.setComentariosList(olderComments);
         }
-        grupoaActualizar.setUsuarioList(olderUsers);
     }
 
     /**

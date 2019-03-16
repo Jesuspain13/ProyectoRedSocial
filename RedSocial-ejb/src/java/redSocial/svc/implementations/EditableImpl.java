@@ -63,7 +63,22 @@ public class EditableImpl implements Editable {
         } catch (Exception ex) {
             throw new Exception(ex);
         }
+        
     
+    }
+    
+    @Override
+    public void changeList(List listToChange, Object userToAdd, int toDo) throws Exception {
+        try {
+            if (toDo == 1) {
+                listToChange.add(userToAdd);
+            } else if (toDo == 2) {
+                listToChange.remove(userToAdd);
+            }
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+        
     }
     
 }

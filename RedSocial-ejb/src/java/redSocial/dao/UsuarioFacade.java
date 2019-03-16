@@ -5,9 +5,12 @@
  */
 package redSocial.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import redSocial.modelos.Amistades;
 import redSocial.modelos.Usuario;
 
 /**
@@ -19,6 +22,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "RedSocial-ejbPU")
     private EntityManager em;
+    
+    
 
     @Override
     protected EntityManager getEntityManager() {
@@ -55,6 +60,24 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         } catch (Exception ex) {
             throw new Exception(ex);
         }
+    }
+    
+    public List<Usuario> findOtherUsers(Usuario user) throws Exception {
+
+            List<Amistades> listaAmist = user.getAmistadesList();
+            List<Usuario> misAmigos= new ArrayList ();
+            for (Amistades amistad: listaAmist) {
+                misAmigos.add(amistad.getIdUsuario2());
+                
+            }
+            
+            misAmigos.add(user);
+       
+            List<Usuario> res = this.findAll();
+            res.removeAll(misAmigos);
+            return res;
+            
+           
     }
     
 }

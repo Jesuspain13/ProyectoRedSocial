@@ -7,7 +7,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import redSocial.modelos.Privacidad;
 import redSocial.modelos.Usuario;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-15T17:46:17")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-16T19:56:30")
 @StaticMetamodel(Post.class)
 public class Post_ { 
 

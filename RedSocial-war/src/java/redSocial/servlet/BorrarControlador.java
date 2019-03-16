@@ -19,6 +19,7 @@ import redSocial.dao.UsuarioFacade;
 import redSocial.modelos.Amistades;
 import redSocial.modelos.Usuario;
 import redSocial.svc.interfaces.Deletable;
+import redSocial.svc.interfaces.Upgradeable;
 
 /**
  *
@@ -36,6 +37,9 @@ public class BorrarControlador extends HttpServlet {
     
     @EJB 
     private Deletable deletableObj; 
+    
+    @EJB
+    private Upgradeable editableObj;
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -76,13 +80,19 @@ public class BorrarControlador extends HttpServlet {
 //                        .encontrarAmistad(usuario, idAmistadABorrar);
                 deletableObj.delete(usuario, idAmistadABorrar, 1);
                 
+                
 //                amistadesDao.remove(amistadABorrar);
 //                BorrarControlador.actualizarAmigosBorrados(usuario, amistadABorrar);
             } else if (request.getParameter("borrarPost") != null) {
                 int idPostABorrar = Integer
                         .parseInt(request.getParameter("borrarPost"));
                 deletableObj.delete(usuario, idPostABorrar, 2);
-            }
+                
+            } else if (request.getParameter("comentarioABorrar") != null && 
+                    !request.getParameter("comentarioABorrar").isEmpty()) {
+                int idCommentToDelete = Integer
+                        .parseInt(request.getParameter("comentarioABorrar"));
+            } 
             
             request.getRequestDispatcher("PerfilUsuario").forward(request, response);
         }catch (Exception ex) {

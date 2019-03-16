@@ -5,7 +5,7 @@
  */
 package redSocial.svc.interfaces;
 
-import redSocial.modelos.Amistades;
+import java.util.List;
 import redSocial.modelos.Grupos;
 import redSocial.modelos.Usuario;
 
@@ -25,6 +25,8 @@ public interface Editable {
      * @throws Exception 
      */
     public void changeGroup(Grupos groupToChange, Usuario userToAdd, int toDo) throws Exception;
+    
+    public void changeList(List groupToChange, Object userToAdd, int toDo) throws Exception;
         
     
 }

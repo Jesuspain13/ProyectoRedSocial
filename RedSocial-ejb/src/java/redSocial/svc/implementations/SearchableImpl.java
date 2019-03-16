@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import redSocial.modelos.Amistades;
 import redSocial.modelos.Grupos;
 import redSocial.modelos.Post;
+import redSocial.modelos.Usuario;
 import redSocial.svc.interfaces.Searchable;
 
 /**
@@ -38,6 +39,8 @@ public class SearchableImpl implements Searchable {
             resultado = SearchableImpl.searchPost(listOfSomething, id);
         } else if (listOfSomething.get(0) instanceof Grupos) {
             resultado = SearchableImpl.searchGroup(listOfSomething, id);
+        } else if (listOfSomething.get(0) instanceof Usuario) {
+            resultado = SearchableImpl.searchUser(listOfSomething, id);
         }
         return resultado;
     }
@@ -56,6 +59,21 @@ public class SearchableImpl implements Searchable {
         }
         return result;
 }
+    
+    private static Object searchUser(List listOfSomething, int id) {
+        Iterator r = listOfSomething.iterator();
+        boolean encontrado = false;
+        Usuario valueIteration;
+        Usuario result = null;
+        while (r.hasNext() && !encontrado) {
+            valueIteration = (Usuario) r.next();
+            if (valueIteration.getId() == id) {
+                result = valueIteration;
+                encontrado = true;
+            }
+        }
+        return result;
+    }
     
     private static Object searchPost(List listOfSomething, int id) {
         Iterator r = listOfSomething.iterator();

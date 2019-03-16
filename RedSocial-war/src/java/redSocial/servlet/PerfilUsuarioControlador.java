@@ -82,10 +82,28 @@ public class PerfilUsuarioControlador extends HttpServlet {
             throws ServletException, IOException {
         try {
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+            List<Grupos> otherGroups;
+            List<Usuario> otrosUsuarios;
+            if (request.getSession().getAttribute("gruposExistentes") == null) {
+                //añado los grupos existentes y los usuarios existentes a la sesion
+                otherGroups = groupDao.GroupList(user);
+                request.getSession().setAttribute("gruposExistentes", otherGroups);
+                otrosUsuarios = userDao.findOtherUsers(user);
+                request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
+            } else {
+                otherGroups = (List<Grupos>) request.getSession().getAttribute("gruposExistentes");
+                otrosUsuarios = (List<Usuario>) request.getSession().getAttribute("usuariosExistentes");
+            }
+            
+            
+          //  List<Usuario> otrosUsuarios = userDao.findOtherUsers(user);
+            request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
             //AÑADIR AMIGO
             if (request.getParameter("nuevoAmigo") != null && !request.getParameter("nuevoAmigo").isEmpty()) {
-                Amistades nuevaAmistad = svc.nuevoAmigo(user, request.getParameter("nuevoAmigo"));
-                creatableObj.create(user, nuevaAmistad);
+                Amistades newRelationship = svc.nuevoAmigo(user, request.getParameter("nuevoAmigo"));
+                creatableObj.create(user, newRelationship);
+                editableObj.changeList(otrosUsuarios, newRelationship.getIdUsuario2(), 2);
+                
                 //userDao.find(user);
                 
             //AÑADIR POST o COMENTARIO
@@ -112,15 +130,30 @@ public class PerfilUsuarioControlador extends HttpServlet {
              if (request.getParameter("grupoAUnirse") != null &&
                      !request.getParameter("grupoAUnirse").isEmpty()) {
                  int idGroup = Integer.parseInt(request.getParameter("grupoAUnirse"));
-                 List<Grupos> otherGroups = (List<Grupos>) request.getSession()
-                         .getAttribute("gruposExistentes");
                  Grupos groupSelected = (Grupos) searchableObj.search(otherGroups, idGroup);
                  editableObj.changeGroup(groupSelected, user, 1);
+                 //elimina el grupo de la lista de los grupos a los que no pertenece el usuario
+                 editableObj.changeList(otherGroups, groupSelected, 2);
                 
+             } //CREAR AMISTAD CON OTRO USUARIO EXISTENTE (SIN BUSCAR)
+             if (request.getParameter("otroUsuario") != null && 
+                     !request.getParameter("otroUsuario").isEmpty()) {
+                 int idUsuario = Integer
+                         .parseInt(request.getParameter("otroUsuario"));
+                 
+                 Usuario newFriend = (Usuario) searchableObj
+                         .search(otrosUsuarios, idUsuario);
+                 
+                 creatableObj.buildRelationship(user, newFriend);
+                 editableObj.changeList(otrosUsuarios, newFriend, 2);
              }
+//            
+//            List<Grupos> otrosGrupos = groupDao.GroupList(user);
+//            request.setAttribute("gruposExistentes", otrosGrupos);
+//            List<Usuario> otrosUsuarios = userDao.findOtherUsers(user);
+//            request.setAttribute("usuariosExistentes", otrosUsuarios);
             
-            List<Grupos> otrosGrupos = groupDao.GroupList(user);
-            request.getSession().setAttribute("gruposExistentes", otrosGrupos);
+            
 //            List<Post> res = svc.buscarPostDeAmigos(user);
 //            request.setAttribute("PostAmigos", res);
             request.getRequestDispatcher(SUCCESS).forward(request, response);
@@ -138,5 +171,6 @@ public class PerfilUsuarioControlador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
+    
 }

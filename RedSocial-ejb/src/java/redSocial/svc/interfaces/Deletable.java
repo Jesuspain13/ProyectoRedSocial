@@ -20,6 +20,6 @@ public interface Deletable {
      * @param id id que del registro que se quiere elmiminar
      * @param toSearch numero que representa que se va a buscar
      */
-    public void delete(Usuario user, int id, int toSearch /*Object thingToCreate*/);
+    public void delete(Object user, int id, int toSearch /*Object thingToCreate*/);
     
 }

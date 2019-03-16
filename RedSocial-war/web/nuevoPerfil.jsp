@@ -189,6 +189,16 @@
                                     <div class="subheading mb-3 text-dark">Últimos comentarios del grupo</div>
                                     <c:forEach items="${grupos.comentariosList}" var="comentariosgrupos"> 
                                         <h5 class="mb-0 text-secondary text-left">${comentariosgrupos.comentario}</h5>
+                                        <%--<c:if test="${comentariosgrupos.idPublicador == usuario.id}">
+                                        <form action="BorrarControlador" method="POST">
+                                            <h5 class="mb-0 text-secondary text-left">${comentariosgrupos.comentario}</h5>
+                                        
+                                            <button name="comentarioABorrar" value="${comentariosgrupos.idComentariogrupo}" type="submit"> Borrar </button>
+                                        </form>
+                                        </c:if>
+                                        <c:if test="${comentariosgrupos.idPublicador != usuario.id}">7
+                                            <h5 class="mb-0 text-secondary text-left">${comentariosgrupos.comentario}</h5>
+                                        </c:if>--%>
                                     </c:forEach> 
                                 </div>
                             </div>
@@ -255,23 +265,25 @@
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
                             </div>
-                            <form>
-                                </div>
-                                <br>
+                        </form>    
+                    </div>
+                <br>
 
                                 <h3 class="mb-5 text-primary">Amigos Sugeridos</h3>
 
                                 <div class="container px-lg-5">
                                     <div class="row mx-lg-n5">
-
-                                        <div class="col py-3 px-lg-5 border bg-light">
-                                            <h3 class="mb-0 text-secondary text-center">Victor Ramón</h3>
-                                            <br>
-                                            <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="nuevoPerfil/img/profile6.jpg" alt="">
-                                            <br>
-                                            <button type="button align-items-center text-primary" class="justify-content-center btn btn-outline-danger">Seguir</button>
-                                        </div>
-
+                                        <c:forEach items="${usuariosExistentes}" var="otroUsuario">
+                                            <form action="PerfilUsuario" method="POST">
+                                                <div class="col py-3 px-lg-5 border bg-light">
+                                                    <h3 class="mb-0 text-secondary text-center">${otroUsuario.nombre}</h3>
+                                                    <br>
+                                                    <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="nuevoPerfil/img/profile6.jpg" alt="">
+                                                    <br>
+                                                    <button name="otroUsuario" value="${otroUsuario.id}" type="submit" class="justify-content-center btn btn-outline-danger">Seguir</button>
+                                                </div>
+                                            </form>
+                                        </c:forEach>
                                         <div class="col py-3 px-lg-5 border bg-light">
                                             <h3 class="mb-0 text-secondary text-center">Andrea Silva</h3>
                                             <br>
