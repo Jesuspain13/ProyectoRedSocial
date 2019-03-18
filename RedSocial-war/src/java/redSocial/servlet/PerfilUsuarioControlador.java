@@ -96,7 +96,6 @@ public class PerfilUsuarioControlador extends HttpServlet {
             }
             
             
-          //  List<Usuario> otrosUsuarios = userDao.findOtherUsers(user);
             request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
             //AÑADIR AMIGO
             if (request.getParameter("nuevoAmigo") != null && !request.getParameter("nuevoAmigo").isEmpty()) {

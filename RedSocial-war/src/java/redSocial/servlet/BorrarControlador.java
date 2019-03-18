@@ -69,7 +69,7 @@ public class BorrarControlador extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             if (request.getParameter("amigoABorrar") != null) {
                 int idAmistadABorrar = Integer
                         .parseInt(request.getParameter("amigoABorrar"));
@@ -78,7 +78,7 @@ public class BorrarControlador extends HttpServlet {
 
 //                Amistades amistadABorrar = BorrarControlador
 //                        .encontrarAmistad(usuario, idAmistadABorrar);
-                deletableObj.delete(usuario, idAmistadABorrar, 1);
+                deletableObj.delete(user, idAmistadABorrar, 1);
                 
                 
 //                amistadesDao.remove(amistadABorrar);
@@ -86,13 +86,22 @@ public class BorrarControlador extends HttpServlet {
             } else if (request.getParameter("borrarPost") != null) {
                 int idPostABorrar = Integer
                         .parseInt(request.getParameter("borrarPost"));
-                deletableObj.delete(usuario, idPostABorrar, 2);
+                deletableObj.delete(user, idPostABorrar, 2);
                 
             } else if (request.getParameter("comentarioABorrar") != null && 
                     !request.getParameter("comentarioABorrar").isEmpty()) {
                 int idCommentToDelete = Integer
                         .parseInt(request.getParameter("comentarioABorrar"));
-            } 
+                deletableObj.delete(user, idCommentToDelete, 4);
+            } else if (request.getParameter("idGrupoDejarSeguir") != null && 
+                    !request.getParameter("idGrupoDejarSeguir").isEmpty()) {
+                int idGroupToUnfollow = Integer
+                        .parseInt(request.getParameter("idGrupoDejarSeguir"));
+                deletableObj.delete(user, idGroupToUnfollow, 3);
+            }
+//            } else if(request.getParameter("borrarComentarioGrupo") != null && 
+//                    !request.getParameter("borrarPost").isEmpty())
+//                int id
             
             request.getRequestDispatcher("PerfilUsuario").forward(request, response);
         }catch (Exception ex) {

@@ -37,10 +37,9 @@ public class UpgradeableImpl implements Upgradeable {
         } else if (thingToAddOrDelete instanceof Post) {
             UpgradeableImpl.updatePost(user, thingToAddOrDelete, toDo);
         } else if (thingToAddOrDelete instanceof Grupos) {
-            UpgradeableImpl.updateGroup(user, thingToAddOrDelete, toDo);
-            
+            UpgradeableImpl.updateGroup(user, thingToAddOrDelete, toDo);  
         } else if (thingToAddOrDelete instanceof ComentariosGrupos) {
-            UpgradeableImpl.updateComment(user, thingToAddOrDelete, toDo);
+            this.updateComment(user, thingToAddOrDelete, toDo);
         }
     }
     
@@ -55,16 +54,17 @@ public class UpgradeableImpl implements Upgradeable {
                 olderUsers.remove(newUserCasted);
             }
             grupoaActualizar.setUsuarioList(olderUsers);
-        } else if (thingToAddOrDelete instanceof ComentariosGrupos){
-            ComentariosGrupos newCommentCasted = (ComentariosGrupos) thingToAddOrDelete;        
-            List<ComentariosGrupos> olderComments = grupoaActualizar.getComentariosList();
-            if (toDo == 1) {
-                olderComments.add(newCommentCasted);
-            } else if(toDo == 2) {
-                olderComments.remove(newCommentCasted);
-            }
-            grupoaActualizar.setComentariosList(olderComments);
-        }
+        } 
+//        else if (thingToAddOrDelete instanceof ComentariosGrupos){
+//            ComentariosGrupos newCommentCasted = (ComentariosGrupos) thingToAddOrDelete;        
+//            List<ComentariosGrupos> olderComments = grupoaActualizar.getComentariosList();
+//            if (toDo == 1) {
+//                olderComments.add(newCommentCasted);
+//            } else if(toDo == 2) {
+//                olderComments.remove(newCommentCasted);
+//            }
+//            grupoaActualizar.setComentariosList(olderComments);
+//        }
     }
 
     /**
@@ -104,12 +104,12 @@ public class UpgradeableImpl implements Upgradeable {
     }
     
     /**
-     * actualizar los Post del usuario
+     * actualizar los COmentarios en grupos del usuario
      * @param user usuario a actualizar
      * @param newPost post a añadir o borrar
      * @param toDo añadir o borrar
      */
-    private static void updateComment(Usuario user, Object newPost, int toDo) {
+    private void updateComment(Usuario user, Object newPost, int toDo) {
         ComentariosGrupos newCommentCasted = (ComentariosGrupos) newPost;
         Grupos grupo = newCommentCasted.getIdGrupal();
         
@@ -120,6 +120,8 @@ public class UpgradeableImpl implements Upgradeable {
             olderComments.remove(newCommentCasted);
         }
         grupo.setComentariosList(olderComments);
+        grupo.setComentariosGruposCollection(olderComments);
+        this.updateUser(user, grupo, 3);
     }
     
     /**
@@ -131,11 +133,22 @@ public class UpgradeableImpl implements Upgradeable {
     private static void updateGroup(Usuario user, Object newGroup, int toDo) {
         Grupos newGroupCasted = (Grupos) newGroup;
         List<Grupos> olderGroups = user.getGruposList();
-        if (toDo == 1) {
-            olderGroups.add(newGroupCasted);
-        } else if(toDo == 2) {
-            olderGroups.remove(newGroupCasted);
+        //actualizar el un grupo
+        if (olderGroups.contains(newGroupCasted) && toDo > 2) { //16/03
+            int indexGroupToChange = olderGroups.indexOf(newGroupCasted);
+            olderGroups.remove(indexGroupToChange);
+            olderGroups.add(indexGroupToChange, newGroupCasted);
+        } else {
+            if (toDo == 1) {
+                olderGroups.add(newGroupCasted);
+            } else if(toDo == 2) {
+                olderGroups.remove(newGroupCasted);
+            }
         }
+//        else if (olderGroups.contains(newGroupCasted) || toDo == 3) { //16/03
+//            olderGroups.remove(newGroupCasted.getIdgrupos());
+//            olderGroups.add(newGroupCasted);
+//        }
         user.setGruposList(olderGroups);
     }
 

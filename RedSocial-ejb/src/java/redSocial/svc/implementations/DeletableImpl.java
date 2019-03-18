@@ -5,6 +5,7 @@
  */
 package redSocial.svc.implementations;
 
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import redSocial.dao.AmistadesFacade;
@@ -70,17 +71,19 @@ public class DeletableImpl implements Deletable {
             Usuario userCast = (Usuario) user;
             Grupos grupo = (Grupos) searchableObj
                     .search(userCast.getGruposList(), id);
-            gruposDao.remove(grupo);
+            List<Usuario> groupUsers = grupo.getUsuarioList();
+            groupUsers.remove(userCast);
+            grupo.setUsuarioList(groupUsers);
+            gruposDao.edit(grupo);
             thingToUpdate = grupo;
             upgradeableObj.updateUser(userCast, thingToUpdate, 2);
             // comentario grupo
         } else if (toSearch == 4) {
-            Grupos groupCast = (Grupos) user;
-            ComentariosGrupos comment = (ComentariosGrupos) searchableObj
-                    .search(groupCast.getComentariosList(), id);
-            commentDao.remove(comment);
-            thingToUpdate = comment;
-            upgradeableObj.updateGroupComponents(groupCast, thingToUpdate, 2);
+            Usuario userCast = (Usuario) user;
+            ComentariosGrupos commentToDelete = commentDao.find(id);
+            commentDao.remove(commentToDelete);
+            thingToUpdate = commentToDelete;
+            upgradeableObj.updateUser(userCast, thingToUpdate, 2);
         }
         
         //if (thingToCreate instanceof Amistades) {

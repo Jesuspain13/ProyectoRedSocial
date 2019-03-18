@@ -5,6 +5,7 @@
  */
 package redSocial.svc.interfaces;
 
+import javax.servlet.http.HttpServletRequest;
 import redSocial.modelos.Usuario;
 
 /**
@@ -52,4 +53,7 @@ public interface Creatable {
      * @throws Exception 
      */
     public void buildPost(Usuario user, String contenido) throws Exception;
+    
+    
+    public void buildUser(HttpServletRequest request) throws Exception;
 }

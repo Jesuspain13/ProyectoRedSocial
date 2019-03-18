@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
 import redSocial.dao.AmistadesFacade;
 import redSocial.dao.ComentariosGruposFacade;
 import redSocial.dao.GruposFacade;
@@ -95,6 +96,7 @@ public class CreatableImpl implements Creatable {
             comment.setIdGrupal((Grupos) searchableObj
                     .search(user.getGruposList(), groupId));
             comment.setIdPublicador(user);
+            comment.setFecha(new Date());
             this.create(user, comment);
         } catch (Exception ex) {
             throw new Exception(ex);
@@ -124,6 +126,31 @@ public class CreatableImpl implements Creatable {
             newPost.setIdUsuario(user);
             newPost.setFecha(new Date());
             this.create(user, newPost);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    // solo para crear un usuario en el registro
+    @Override
+    public void buildUser(HttpServletRequest request) throws Exception {
+        try {
+            String email = request.getParameter("email");
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+            String telefono = request.getParameter("telefono");
+            String password = request.getParameter("password");
+
+            Usuario user = new Usuario();
+
+            user.setEmail(email);
+            user.setNombre(nombre);
+            user.setApellidos(apellidos);
+            user.setTelefono(telefono);
+            user.setPassword(password);
+
+            userDao.create(user);
+        
         } catch (Exception ex) {
             throw new Exception(ex);
         }

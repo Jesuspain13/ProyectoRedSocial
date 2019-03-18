@@ -47,6 +47,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
     }
     
+    /**
+     * encuentra a un usuario en el login por su email y contraseña
+     * @param email email de usuario
+     * @param password contraseña
+     * @return Usuario
+     * @throws Exception 
+     */
+    
     public Usuario findByEmailAndPassword(String email, String password) throws Exception {
         try {
             String sql = "FROM Usuario u WHERE u.email=:email "
@@ -62,6 +70,12 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
     }
     
+    /**
+     * encontrar a los que no son amigos del usuario
+     * @param user usuario que utiliza la web
+     * @return lista de usuarios no amigos
+     * @throws Exception 
+     */
     public List<Usuario> findOtherUsers(Usuario user) throws Exception {
 
             List<Amistades> listaAmist = user.getAmistadesList();

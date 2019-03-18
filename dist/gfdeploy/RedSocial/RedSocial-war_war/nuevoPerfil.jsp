@@ -75,6 +75,8 @@
         </nav>
 
         <div class="container-fluid p-0">
+            
+            
 
             <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
                 <div class="w-100">
@@ -84,6 +86,24 @@
                     <div class="subheading mb-5">
                         <a href="mailto:name@email.com">${usuario.email}</a>
                     </div>
+                    
+                    <div class="social-icons">
+                        <a href="#">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    
+                    <br>
+                    
                     <div class="subheading mb-2 text-secondary">Mis últimas Publicaciones</div>
                     <tr>
                         <c:forEach items="${usuario.postList}" var="Post">
@@ -101,22 +121,45 @@
                                 </div>
                             </div>
                         </form>
-                    </c:forEach>
+                        </c:forEach>
                     </tr>
-                    <div class="social-icons">
-                        <a href="#">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
+                    
+                    <div class="subheading mb-2 text-primary">Mis últimas Publicaciones en Grupos</div>
+                    <tr>
+                    <div class="container">
+                        <c:forEach items="${usuario.getGruposList()}" var="grupo">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="subheading mb-2 text-dark">${grupo.nombregrupo}</div>
+                            </div>
+                            <div class="col-8">
+                                <c:forEach items="${grupo.getComentariosList()}" var="comentario">
+                                    <div class="subheading mb-2 text-secondary pb-2">                             
+                                        <c:if test="${comentario.getIdPublicador().equals(usuario)}" >
+                                            ${comentario.getComentario()}
+                                        </c:if>
+                                    </div>
+                                </c:forEach>
+                                <%--Buenas a todos, os recuerdo que esta tarde a las 16.00 tenemos la salida al Llano de la perdiz. Se ruega puntualidad.--%>
+                            </div>
+                            <div class="col-1">
+                                <c:forEach items="${grupo.getComentariosList()}" var="comentario">
+                                        <c:if test="${comentario.getIdPublicador().equals(usuario)}" var="comentarioDeUsuario" >
+                                            <form action="BorrarControlador" method="POST">
+                                                <div class="subheading mb-2 text-secondary pb-2">
+                                                    <button type="submit" value="${comentario.getIdComentariogrupo()}" name="comentarioABorrar" class="btn btn-danger btn-sm active" aria-pressed="true">Borrar</button>
+                                                </div>
+                                            </form>
+                                        </c:if>
+                                </c:forEach>
+                               
+                            </div>
+                        </div>
+                        </c:forEach>
                     </div>
+                    </tr>
+                    
+                    
                 </div>
             </section>
 
@@ -127,14 +170,14 @@
                     <h2 class="mb-5">Mis amigos</h2>
 
                     <c:forEach items="${usuario.amistadesList}" var="amistad">  
-
-                        <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-                            <form action="BorrarControlador" method="POST">
+                        <form action="BorrarControlador" method="POST">
+                            <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+                            
                                 <div class="col-sm-4">
                                     <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="nuevoPerfil/img/profile3.jpg" alt="">
                                     <h3 name="amigoABorrar" value="${amistad.amistadesid}" class="mb-0 text-secondary text-center">${amistad.idUsuario2.nombre}</h3>
                                     <!--<input name="amigoABorrar" value="${amistad.amistadesid}"></input>-->
-                                    <button name="amigoABorrar" type="submit" value="${amistad.amistadesid}" class="btn btn-primary btn-lg btn-block">Dejar de seguir</button>
+                                    <button name="amigoABorrar" type="submit" value="${amistad.amistadesid}" class="btn btn-danger btn-lg btn-block">Dejar de seguir</button>
 
                                 </div>
                                 <div class="col-sm-8">
@@ -145,27 +188,11 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            
+                            </div>
+                        </form>
                     </c:forEach>  
-
-                    <!--<div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-                     <div class="col-sm-4">
-                       <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile2.jpg" alt="">
-                       <h3 class="mb-0 text-secondary text-center">Jorge Cruzado</h3>
-                       
-                     </div>
-             
-             
-                     <div class="col-sm-8">
-                       <div class="resume-content">
-                         <div class="subheading mb-3 text-primary">Su último comentario</div>
-                         <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
-                       </div>
-                     </div>
-                   </div>
                     
-                    -->
             </section>
 
             <hr class="m-0">
@@ -178,51 +205,26 @@
                             <div class="col-sm-4 align-items-left">
                                 <h3 class="mb-0 text-primary text-center">${grupos.nombregrupo}</h3>
                                 <p></p>
-                                <img class="img-fluid img-profile rounded mx-auto mb-2" src="perfil/img/biketeam.jpg" alt="">
-                                <button type="button" class="btn btn-primary btn-lg btn-block">Integrantes
+                                <img class="img-fluid img-profile rounded mx-auto mb-2" src="nuevoPerfil/img/biketeam.jpg" alt="">
+                                <button type="button" class="btn btn-primary btn-lg btn-block mb-2">Integrantes
                                     <span class="badge badge-light">${grupos.getUsuarioList().size()}</span>
                                     <span class="sr-only">unread messages</span>
                                 </button>
+                                <form action="BorrarControlador" method="POST">
+                                    <button class="btn btn-danger btn-lg btn-block" name="idGrupoDejarSeguir" value="${grupos.getIdgrupos()}" type="submit">Salir del grupo</button>
+                                </form>
                             </div>
                             <div class="col-sm-8">
                                 <div class="resume-content">
                                     <div class="subheading mb-3 text-dark">Últimos comentarios del grupo</div>
                                     <c:forEach items="${grupos.comentariosList}" var="comentariosgrupos"> 
                                         <h5 class="mb-0 text-secondary text-left">${comentariosgrupos.comentario}</h5>
-                                        <%--<c:if test="${comentariosgrupos.idPublicador == usuario.id}">
-                                        <form action="BorrarControlador" method="POST">
-                                            <h5 class="mb-0 text-secondary text-left">${comentariosgrupos.comentario}</h5>
-                                        
-                                            <button name="comentarioABorrar" value="${comentariosgrupos.idComentariogrupo}" type="submit"> Borrar </button>
-                                        </form>
-                                        </c:if>
-                                        <c:if test="${comentariosgrupos.idPublicador != usuario.id}">7
-                                            <h5 class="mb-0 text-secondary text-left">${comentariosgrupos.comentario}</h5>
-                                        </c:if>--%>
                                     </c:forEach> 
                                 </div>
                             </div>
 
                         </div>
                     </c:forEach>  
-
-                    <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="col-sm-4 align-items-left">
-                            <h3 class="mb-0 text-primary text-center">Cardio Workout</h3>
-                            <p></p>
-                            <img class="img-fluid img-profile rounded mx-auto mb-2" src="perfil/img/cardioworkout.jpg" alt="">
-                            <button type="button" class="btn btn-primary btn-lg btn-block">Integrantes
-                                <span class="badge badge-light">16</span>
-                                <span class="sr-only">unread messages</span>
-                            </button>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="resume-content">
-                                <div class="subheading mb-3 text-dark">Últimos comentarios del grupo</div>
-                                <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
-                            </div>
-                        </div>
-                    </div>
 
             </section>
 
@@ -261,9 +263,9 @@
                     <h2 class="mb-5">Añadir Nuevo Amigo</h2>
                     <div class="input-group mb-3">
                         <form action="PerfilUsuario" method="POST">  
-                            <input name="nuevoAmigo" type="text" class="form-control" placeholder="Escribe el nombre de tu amigo" aria-label="Escribe el nombre de tu amigo" aria-describedby="button-addon2">
+                            <input name="nuevoAmigo" type="text" class="form-control mb-2" placeholder="Escribe el nombre de tu amigo" aria-label="Escribe el nombre de tu amigo" aria-describedby="button-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar y seguir</button>
                             </div>
                         </form>    
                     </div>
@@ -284,21 +286,6 @@
                                                 </div>
                                             </form>
                                         </c:forEach>
-                                        <div class="col py-3 px-lg-5 border bg-light">
-                                            <h3 class="mb-0 text-secondary text-center">Andrea Silva</h3>
-                                            <br>
-                                            <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="nuevoPerfil/img/profile4.jpg" alt="">
-                                            <br>
-                                            <button type="button align-items-center text-primary" class="justify-content-center btn btn-outline-danger">Seguir</button>
-                                        </div>
-
-                                        <div class="col py-3 px-lg-5 border bg-light">
-                                            <h3 class="mb-0 text-secondary text-center">Marta Ferreiro</h3>
-                                            <br>
-                                            <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="nuevoPerfil/img/profile5.jpg" alt="">
-                                            <br>
-                                            <button type="button align-items-center text-primary" class="btn btn-outline-danger">Seguir</button>
-                                        </div>
 
                                     </div>
                                 </div>
@@ -319,11 +306,11 @@
                                                     <div class="col-sm-4 py-3 px-lg-5 border bg-light">
                                                         <h3 class="mb-0 text-secondary text-center">${grupo.nombregrupo}</h3>
                                                         <br>
-                                                        <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="perfil/img/biketeam.jpg" alt="">
+                                                        <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="nuevoPerfil/img/biketeam.jpg" alt="">
                                                         <br>
                                                         <button name="grupoAUnirse" value="${grupo.idgrupos}" type="submit" class="btn btn-primary btn-lg btn-block">Unirse</button>
                                                     </div>
-                                                      </c:forEach>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </form>
