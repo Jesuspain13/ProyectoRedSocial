@@ -64,7 +64,6 @@ public class EditableImpl implements Editable {
             throw new Exception(ex);
         }
         
-    
     }
     
     @Override

@@ -34,6 +34,12 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
     
+    /**
+     * buscar un usuario por email
+     * @param email email del usuario a buscar
+     * @return usuario encontrado
+     * @throws Exception 
+     */
     public Usuario findByEmail (String email) throws Exception {
         try {
             String sql = "FROM Usuario u WHERE u.email=:email ";

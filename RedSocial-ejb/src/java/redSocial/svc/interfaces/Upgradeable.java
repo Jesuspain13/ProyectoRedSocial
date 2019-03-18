@@ -31,6 +31,14 @@ public interface Upgradeable {
      */
     public void updateGroupComponents(Grupos grupoaActualizar, Object thingToAddOrDelete, int toDo);
     
+    /**
+     * actualizar grupos de usuario
+     * @param user usuario a actualizar
+     * @param newGroup grupo a añadir o borrar
+     * @param toDo añadir o borrar
+     */
+    public void updateGroup(Usuario user, Object newGroup, int toDo);
+    
     
     
 }

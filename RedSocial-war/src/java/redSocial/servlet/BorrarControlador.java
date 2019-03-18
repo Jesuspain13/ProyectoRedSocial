@@ -70,38 +70,34 @@ public class BorrarControlador extends HttpServlet {
             throws ServletException, IOException {
         try {
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+            //dejar de seguir a un amigo
             if (request.getParameter("amigoABorrar") != null) {
                 int idAmistadABorrar = Integer
                         .parseInt(request.getParameter("amigoABorrar"));
                 
-                
-
-//                Amistades amistadABorrar = BorrarControlador
-//                        .encontrarAmistad(usuario, idAmistadABorrar);
                 deletableObj.delete(user, idAmistadABorrar, 1);
                 
-                
-//                amistadesDao.remove(amistadABorrar);
-//                BorrarControlador.actualizarAmigosBorrados(usuario, amistadABorrar);
-            } else if (request.getParameter("borrarPost") != null) {
+            } // borrar un post nuestro
+            else if (request.getParameter("borrarPost") != null) {
                 int idPostABorrar = Integer
                         .parseInt(request.getParameter("borrarPost"));
+                
                 deletableObj.delete(user, idPostABorrar, 2);
                 
-            } else if (request.getParameter("comentarioABorrar") != null && 
+            } // borrar un comentario nuestro de un grupo en el que estamos
+            else if (request.getParameter("comentarioABorrar") != null && 
                     !request.getParameter("comentarioABorrar").isEmpty()) {
                 int idCommentToDelete = Integer
                         .parseInt(request.getParameter("comentarioABorrar"));
                 deletableObj.delete(user, idCommentToDelete, 4);
-            } else if (request.getParameter("idGrupoDejarSeguir") != null && 
+            } // dejar de seguir a un grupo
+            else if (request.getParameter("idGrupoDejarSeguir") != null && 
                     !request.getParameter("idGrupoDejarSeguir").isEmpty()) {
                 int idGroupToUnfollow = Integer
                         .parseInt(request.getParameter("idGrupoDejarSeguir"));
                 deletableObj.delete(user, idGroupToUnfollow, 3);
             }
-//            } else if(request.getParameter("borrarComentarioGrupo") != null && 
-//                    !request.getParameter("borrarPost").isEmpty())
-//                int id
+
             
             request.getRequestDispatcher("PerfilUsuario").forward(request, response);
         }catch (Exception ex) {

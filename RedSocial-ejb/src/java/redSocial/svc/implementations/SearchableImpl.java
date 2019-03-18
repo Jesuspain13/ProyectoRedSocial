@@ -34,18 +34,18 @@ public class SearchableImpl implements Searchable {
     public Object search(List listOfSomething, int id) {
         Object resultado = null;
         if (listOfSomething.get(0) instanceof Amistades) {  
-            resultado = SearchableImpl.searchRelationship(listOfSomething, id);
+            resultado = this.searchRelationship(listOfSomething, id);
         } else if (listOfSomething.get(0) instanceof Post) {
-            resultado = SearchableImpl.searchPost(listOfSomething, id);
+            resultado = this.searchPost(listOfSomething, id);
         } else if (listOfSomething.get(0) instanceof Grupos) {
-            resultado = SearchableImpl.searchGroup(listOfSomething, id);
+            resultado = this.searchGroup(listOfSomething, id);
         } else if (listOfSomething.get(0) instanceof Usuario) {
-            resultado = SearchableImpl.searchUser(listOfSomething, id);
+            resultado = this.searchUser(listOfSomething, id);
         }
         return resultado;
     }
     
-    private static Object searchRelationship(List listOfSomething, int id) {
+    private Object searchRelationship(List listOfSomething, int id) {
         Iterator r = listOfSomething.iterator();
         boolean encontrado = false;
         Amistades valueIteration;
@@ -60,7 +60,7 @@ public class SearchableImpl implements Searchable {
         return result;
 }
     
-    private static Object searchUser(List listOfSomething, int id) {
+    private Object searchUser(List listOfSomething, int id) {
         Iterator r = listOfSomething.iterator();
         boolean encontrado = false;
         Usuario valueIteration;
@@ -75,7 +75,7 @@ public class SearchableImpl implements Searchable {
         return result;
     }
     
-    private static Object searchPost(List listOfSomething, int id) {
+    private Object searchPost(List listOfSomething, int id) {
         Iterator r = listOfSomething.iterator();
         boolean encontrado = false;
         Post valueIteration;
@@ -90,7 +90,7 @@ public class SearchableImpl implements Searchable {
         return result;
 }
     
-    private static Object searchGroup(List listOfSomething, int id) {
+    private Object searchGroup(List listOfSomething, int id) {
         Iterator r = listOfSomething.iterator();
         boolean encontrado = false;
         Grupos valueIteration;

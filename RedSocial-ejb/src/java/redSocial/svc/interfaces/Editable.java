@@ -26,7 +26,14 @@ public interface Editable {
      */
     public void changeGroup(Grupos groupToChange, Usuario userToAdd, int toDo) throws Exception;
     
-    public void changeList(List groupToChange, Object userToAdd, int toDo) throws Exception;
+    /**
+     * cambia una lista
+     * @param listToChange lista a cambiar
+     * @param userToAdd usuario a añadir o borrar de la lista
+     * @param toDo añadir o borrar (1 o 2 respectivamente)
+     * @throws Exception 
+     */
+    public void changeList(List listToChange, Object userToAdd, int toDo) throws Exception;
         
     
 }

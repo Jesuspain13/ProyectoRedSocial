@@ -85,16 +85,7 @@ public class DeletableImpl implements Deletable {
             thingToUpdate = commentToDelete;
             upgradeableObj.updateUser(userCast, thingToUpdate, 2);
         }
-        
-        //if (thingToCreate instanceof Amistades) {
-//           Amistades amistad = (Amistades) thingToCreate;
-//           friendsDao.remove(amistad);
-//        } else if (thingToCreate instanceof Post) {
-//            postDao.remove((Post)thingToCreate);    
-//        } else if (thingToCreate instanceof Grupos) {
-//            gruposDao.remove((Grupos)thingToCreate);
-//        }
-        //upgradeableObj.updateUser(user, thingToUpdate, 2);
+      
         
     }
     

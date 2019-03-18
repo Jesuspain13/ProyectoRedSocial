@@ -71,7 +71,6 @@ public class PerfilUsuarioControlador extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -84,26 +83,25 @@ public class PerfilUsuarioControlador extends HttpServlet {
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             List<Grupos> otherGroups;
             List<Usuario> otrosUsuarios;
+            
             if (request.getSession().getAttribute("gruposExistentes") == null) {
-                //añado los grupos existentes y los usuarios existentes a la sesion
+                //añado los grupos existentes y los usuarios existentes a la sesion si no están
                 otherGroups = groupDao.GroupList(user);
                 request.getSession().setAttribute("gruposExistentes", otherGroups);
                 otrosUsuarios = userDao.findOtherUsers(user);
                 request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
             } else {
+                //si ya están en la sesión solo los coge
                 otherGroups = (List<Grupos>) request.getSession().getAttribute("gruposExistentes");
                 otrosUsuarios = (List<Usuario>) request.getSession().getAttribute("usuariosExistentes");
             }
-            
-            
+
             request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
             //AÑADIR AMIGO
             if (request.getParameter("nuevoAmigo") != null && !request.getParameter("nuevoAmigo").isEmpty()) {
                 Amistades newRelationship = svc.nuevoAmigo(user, request.getParameter("nuevoAmigo"));
                 creatableObj.create(user, newRelationship);
                 editableObj.changeList(otrosUsuarios, newRelationship.getIdUsuario2(), 2);
-                
-                //userDao.find(user);
                 
             //AÑADIR POST o COMENTARIO
             }
@@ -146,15 +144,7 @@ public class PerfilUsuarioControlador extends HttpServlet {
                  creatableObj.buildRelationship(user, newFriend);
                  editableObj.changeList(otrosUsuarios, newFriend, 2);
              }
-//            
-//            List<Grupos> otrosGrupos = groupDao.GroupList(user);
-//            request.setAttribute("gruposExistentes", otrosGrupos);
-//            List<Usuario> otrosUsuarios = userDao.findOtherUsers(user);
-//            request.setAttribute("usuariosExistentes", otrosUsuarios);
-            
-            
-//            List<Post> res = svc.buscarPostDeAmigos(user);
-//            request.setAttribute("PostAmigos", res);
+
             request.getRequestDispatcher(SUCCESS).forward(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();

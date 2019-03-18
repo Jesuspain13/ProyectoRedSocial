@@ -58,7 +58,7 @@
             </div>
             <button type="submit">Entrar</button>
         </form>
-        <p class=" w3l-register-p">¿No tienes cuenta todavía?<a href="#" class="register"> Registrarte Ahora</a></p>
+        <p class=" w3l-register-p">¿No tienes cuenta todavía?<a href="<% request.getContextPath(); %>form.jsp" class="register"> Registrarte Ahora</a></p>
     </div>
     <footer>
         <p class="copyright-agileinfo"> &copy; 2018 Víctor Ramón. Todos los Derechos Reservados | Design by <a href="http://w3layouts.com">DAM</a></p>

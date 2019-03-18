@@ -33,11 +33,11 @@ public class UpgradeableImpl implements Upgradeable {
     @Override
     public void updateUser(Usuario user, Object thingToAddOrDelete, int toDo) {
         if (thingToAddOrDelete instanceof Amistades) {  
-            UpgradeableImpl.updateRelationship(user, thingToAddOrDelete, toDo);
+            this.updateRelationship(user, thingToAddOrDelete, toDo);
         } else if (thingToAddOrDelete instanceof Post) {
-            UpgradeableImpl.updatePost(user, thingToAddOrDelete, toDo);
+            this.updatePost(user, thingToAddOrDelete, toDo);
         } else if (thingToAddOrDelete instanceof Grupos) {
-            UpgradeableImpl.updateGroup(user, thingToAddOrDelete, toDo);  
+            this.updateGroup(user, thingToAddOrDelete, toDo);  
         } else if (thingToAddOrDelete instanceof ComentariosGrupos) {
             this.updateComment(user, thingToAddOrDelete, toDo);
         }
@@ -55,16 +55,6 @@ public class UpgradeableImpl implements Upgradeable {
             }
             grupoaActualizar.setUsuarioList(olderUsers);
         } 
-//        else if (thingToAddOrDelete instanceof ComentariosGrupos){
-//            ComentariosGrupos newCommentCasted = (ComentariosGrupos) thingToAddOrDelete;        
-//            List<ComentariosGrupos> olderComments = grupoaActualizar.getComentariosList();
-//            if (toDo == 1) {
-//                olderComments.add(newCommentCasted);
-//            } else if(toDo == 2) {
-//                olderComments.remove(newCommentCasted);
-//            }
-//            grupoaActualizar.setComentariosList(olderComments);
-//        }
     }
 
     /**
@@ -73,7 +63,7 @@ public class UpgradeableImpl implements Upgradeable {
      * @param newFriend usuario a añadir o borrar
      * @param toDo añadir o borrar
      */
-    private static void updateRelationship(Usuario user, Object newFriend, int toDo) {
+    private void updateRelationship(Usuario user, Object newFriend, int toDo) {
         Amistades newFriendCasted = (Amistades) newFriend;
         List<Amistades> olderFriends = user.getAmistadesList();
         // si toDo es 1 es que se va a añadir
@@ -92,7 +82,7 @@ public class UpgradeableImpl implements Upgradeable {
      * @param newPost post a añadir o borrar
      * @param toDo añadir o borrar
      */
-    private static void updatePost(Usuario user, Object newPost, int toDo) {
+    private void updatePost(Usuario user, Object newPost, int toDo) {
         Post newPostCasted = (Post) newPost;
         List<Post> olderPosts = user.getPostList();
         if (toDo == 1) {
@@ -124,17 +114,12 @@ public class UpgradeableImpl implements Upgradeable {
         this.updateUser(user, grupo, 3);
     }
     
-    /**
-     * actualizar grupos de usuario
-     * @param user usuario a actualizar
-     * @param newGroup grupo a añadir o borrar
-     * @param toDo añadir o borrar
-     */
-    private static void updateGroup(Usuario user, Object newGroup, int toDo) {
+    @Override
+    public void updateGroup(Usuario user, Object newGroup, int toDo) {
         Grupos newGroupCasted = (Grupos) newGroup;
         List<Grupos> olderGroups = user.getGruposList();
         //actualizar el un grupo
-        if (olderGroups.contains(newGroupCasted) && toDo > 2) { //16/03
+        if (olderGroups.contains(newGroupCasted) && toDo > 2) { 
             int indexGroupToChange = olderGroups.indexOf(newGroupCasted);
             olderGroups.remove(indexGroupToChange);
             olderGroups.add(indexGroupToChange, newGroupCasted);
@@ -145,10 +130,7 @@ public class UpgradeableImpl implements Upgradeable {
                 olderGroups.remove(newGroupCasted);
             }
         }
-//        else if (olderGroups.contains(newGroupCasted) || toDo == 3) { //16/03
-//            olderGroups.remove(newGroupCasted.getIdgrupos());
-//            olderGroups.add(newGroupCasted);
-//        }
+        
         user.setGruposList(olderGroups);
     }
 
