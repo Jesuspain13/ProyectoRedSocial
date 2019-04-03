@@ -17,7 +17,7 @@ import redSocial.modelos.Usuario;
  * @author Jesus
  */
 @Stateless
-public class GruposFacade extends AbstractFacade<Grupos> {
+public class GruposFacade extends AbstractFacade<Grupos> implements GruposFacadeLocal {
 
     @PersistenceContext(unitName = "RedSocial-ejbPU")
     private EntityManager em;
@@ -31,6 +31,7 @@ public class GruposFacade extends AbstractFacade<Grupos> {
         super(Grupos.class);
     }
     
+    @Override
     public List<Grupos> GroupList(Usuario user) throws Exception {
 
         try {
@@ -42,7 +43,5 @@ public class GruposFacade extends AbstractFacade<Grupos> {
         }
 
     }
-    
-    
     
 }

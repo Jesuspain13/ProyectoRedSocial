@@ -5,22 +5,25 @@
  */
 package redSocial.modelos;
 
+import com.google.gson.Gson;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,13 +40,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
     , @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos")
+    , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
     , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
-    , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
-    , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
+    , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")})
 public class Usuario implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPublicador")
-    private Collection<ComentariosGrupos> comentariosGruposCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,40 +51,56 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "apellidos")
     private String apellidos;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "password")
+    private String password;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "telefono")
     private String telefono;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 45)
+    @Size(max = 75)
     @Column(name = "email")
     private String email;
-    @Size(max = 45)
-    @Column(name = "password")
-    private String password;
-    @ManyToMany(mappedBy = "usuarioList")
+    @ManyToMany(mappedBy = "usuarioList", fetch = FetchType.LAZY)
     private List<Grupos> gruposList;
-    @OneToMany(mappedBy = "idUsuario")
+    //atributo para la lista de amigos
+    @JoinTable(name = "amigos", joinColumns = {
+        @JoinColumn(name = "id_usuario1", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "id_usuario2", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Usuario> amigosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPublicador", fetch = FetchType.LAZY)
     private List<Post> postList;
-    @OneToMany(mappedBy = "idUsuario1")
-    private List<Amistades> amistadesList;
-    @OneToMany(mappedBy = "idUsuario2")
-    private List<Amistades> amistadesList1;
-    @OneToMany(mappedBy = "idUsuario")
-    private List<Grupos> gruposList1;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
-    private Privacidad privacidad;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAutor", fetch = FetchType.LAZY)
+    private List<ComentarioGrupo> comentarioGrupoList;
 
     public Usuario() {
     }
 
     public Usuario(Integer id) {
         this.id = id;
+    }
+
+    public Usuario(Integer id, String nombre, String apellidos, String password, String telefono) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.password = password;
+        this.telefono = telefono;
     }
 
     public Integer getId() {
@@ -111,6 +127,14 @@ public class Usuario implements Serializable {
         this.apellidos = apellidos;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -127,14 +151,6 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @XmlTransient
     public List<Grupos> getGruposList() {
         return gruposList;
@@ -143,6 +159,16 @@ public class Usuario implements Serializable {
     public void setGruposList(List<Grupos> gruposList) {
         this.gruposList = gruposList;
     }
+
+    @XmlTransient
+    public List<Usuario> getAmigosList() {
+        return amigosList;
+    }
+
+    public void setUsuarioList(List<Usuario> amigosList) {
+        this.amigosList = amigosList;
+    }
+
 
     @XmlTransient
     public List<Post> getPostList() {
@@ -154,38 +180,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Amistades> getAmistadesList() {
-        return amistadesList;
+    public List<ComentarioGrupo> getComentarioGrupoList() {
+        return comentarioGrupoList;
     }
 
-    public void setAmistadesList(List<Amistades> amistadesList) {
-        this.amistadesList = amistadesList;
-    }
-
-    @XmlTransient
-    public List<Amistades> getAmistadesList1() {
-        return amistadesList1;
-    }
-
-    public void setAmistadesList1(List<Amistades> amistadesList1) {
-        this.amistadesList1 = amistadesList1;
-    }
-
-    @XmlTransient
-    public List<Grupos> getGruposList1() {
-        return gruposList1;
-    }
-
-    public void setGruposList1(List<Grupos> gruposList1) {
-        this.gruposList1 = gruposList1;
-    }
-
-    public Privacidad getPrivacidad() {
-        return privacidad;
-    }
-
-    public void setPrivacidad(Privacidad privacidad) {
-        this.privacidad = privacidad;
+    public void setComentarioGrupoList(List<ComentarioGrupo> comentarioGrupoList) {
+        this.comentarioGrupoList = comentarioGrupoList;
     }
 
     @Override
@@ -212,14 +212,40 @@ public class Usuario implements Serializable {
     public String toString() {
         return "redSocial.modelos.Usuario[ id=" + id + " ]";
     }
-
-    @XmlTransient
-    public Collection<ComentariosGrupos> getComentariosGruposCollection() {
-        return comentariosGruposCollection;
-    }
-
-    public void setComentariosGruposCollection(Collection<ComentariosGrupos> comentariosGruposCollection) {
-        this.comentariosGruposCollection = comentariosGruposCollection;
+    
+    public static String toJson(Usuario user) {
+        Gson gson = new Gson();
+        for(Usuario u: user.getAmigosList()) {
+            u.setGruposList(null);
+            u.setUsuarioList(null);
+            u.setComentarioGrupoList(null);
+            u.setPostList(null);
+        }
+        for (Post p: user.getPostList()) {
+            p.setIdPublicador(null);
+        }
+        for (ComentarioGrupo c: user.getComentarioGrupoList()) {
+            c.setIdAutor(null);
+            c.setIdGrupo(null);
+        }
+        for (Grupos g: user.getGruposList()) {
+            g.setGroupSize();
+            g.setUsuarioList(null);
+//            for (Usuario u: g.getUsuarioList())  {
+//                if (!u.equals(user)) {
+//                    u.setComentarioGrupoList(null);
+//                    u.setGruposList(null);
+//                    u.setPostList(null);
+//                    u.setUsuarioList(null);
+//                }
+//            }
+            for (ComentarioGrupo c: g.getComentarioGrupoList()) {
+                c.setIdAutor(null);
+                c.setIdGrupo(null);
+            }
+        }
+        String userJson = gson.toJson(user);
+        return userJson;
     }
     
 }

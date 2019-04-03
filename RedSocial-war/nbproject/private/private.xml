@@ -3,9 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/RedSocial/RedSocial-war/src/java/redSocial/servlet/BorrarControlador.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/RedSocial/RedSocial-war/src/java/redSocial/servlet/PerfilUsuarioControlador.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/RedSocial/RedSocial-war/web/login.jsp</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/web/nuevoPerfil.jsp</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/web/web.xml</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/rest/GruposFacadeREST.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/rest/ComentarioGrupoFacadeREST.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/servlet/DropBoxUploadImageControlador.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/rest/UsuarioFacadeREST.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/servlet/BorrarControlador.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/servlet/LoginControlador.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/rest/ApplicationConfig.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/servlet/RegisterController.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/rest/PostFacadeREST.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-war/src/java/redSocial/servlet/PerfilUsuarioControlador.java</file>
         </group>
     </open-files>
 </project-private>

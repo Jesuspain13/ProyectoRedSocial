@@ -5,21 +5,17 @@
  */
 package redSocial.svc.interfaces;
 
+import javax.ejb.Local;
+import javax.servlet.http.HttpServletRequest;
 import redSocial.modelos.Usuario;
 
 /**
  *
  * @author Jesus
  */
-
+@Local
 public interface Deletable {
     
-    /**
-     * metodo para borrar un registro en la base de datos y modificar el usuario
-     * @param user usuario a modificar
-     * @param id id que del registro que se quiere elmiminar
-     * @param toSearch numero que representa que se va a buscar
-     */
-    public void delete(Object user, int id, int toSearch /*Object thingToCreate*/);
+    public Object delete(Usuario user, int id);
     
 }

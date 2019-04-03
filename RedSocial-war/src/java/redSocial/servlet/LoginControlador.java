@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import redSocial.dao.UsuarioFacade;
+import redSocial.dao.UsuarioFacadeLocal;
 import redSocial.modelos.Usuario;
+import svc.manejoHttpRequest.UsuarioHttp;
 
 /**
  *
@@ -26,7 +27,10 @@ public class LoginControlador extends HttpServlet {
     private static final String SUCCESS = "/PerfilUsuario";
     
     @EJB
-    private UsuarioFacade dao;
+    private UsuarioFacadeLocal dao;
+    
+    @EJB
+    private UsuarioHttp userHttp;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -55,11 +59,10 @@ public class LoginControlador extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            Usuario res = dao.findByEmailAndPassword(email, password);
+//            String email = request.getParameter("email");
+//            String password = request.getParameter("password");
+            Usuario res = userHttp.logearse(request);
             
-            request.setAttribute("usuario", res);
             HttpSession sesion = request.getSession();
             sesion.setAttribute("usuario", res);
             request.getRequestDispatcher(SUCCESS).forward(request, response);

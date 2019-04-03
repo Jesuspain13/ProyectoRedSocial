@@ -12,7 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import redSocial.svc.interfaces.Creatable;
+import redSocial.svc.interfaces.entities.UsuarioSvc;
+import svc.manejoHttpRequest.UsuarioHttp;
 
 /**
  *
@@ -22,7 +23,10 @@ import redSocial.svc.interfaces.Creatable;
 public class RegisterController extends HttpServlet {
     
     @EJB
-    private Creatable creatableObj;
+    private UsuarioSvc userSvc;
+    
+    @EJB
+    private UsuarioHttp svc;
 
     private final static String SUCCESS = "login.jsp";
 
@@ -54,7 +58,7 @@ public class RegisterController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            creatableObj.buildUser(request);
+            svc.construirUsuario(request);
 
             request.getRequestDispatcher(SUCCESS).forward(request, response);
         } catch (Exception ex) {

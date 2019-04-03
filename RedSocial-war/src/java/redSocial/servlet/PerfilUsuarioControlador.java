@@ -13,16 +13,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import redSocial.dao.GruposFacade;
-import redSocial.dao.PostFacade;
-import redSocial.dao.UsuarioFacade;
-import redSocial.modelos.Amistades;
 import redSocial.modelos.Grupos;
 import redSocial.modelos.Usuario;
-import redSocial.svc.AmistadesSvc;
-import redSocial.svc.interfaces.Creatable;
-import redSocial.svc.interfaces.Editable;
-import redSocial.svc.interfaces.Searchable;
+import redSocial.svc.interfaces.entities.UsuarioSvc;
+import redSocial.svc.interfaces.entities.ComentarioSvc;
+import redSocial.svc.interfaces.entities.GruposSvc;
+import svc.manejoHttpRequest.ComentarioHttp;
+import svc.manejoHttpRequest.GrupoHttp;
+import svc.manejoHttpRequest.PostHttp;
+import svc.manejoHttpRequest.UsuarioHttp;
 
 /**
  *
@@ -32,26 +31,26 @@ import redSocial.svc.interfaces.Searchable;
 public class PerfilUsuarioControlador extends HttpServlet {
 
     @EJB
-    public AmistadesSvc svc;
-    
+    public UsuarioSvc userSvc;
+
     @EJB
-    public PostFacade dao;
-    
+    public PostHttp postSvc;
+
     @EJB
-    public UsuarioFacade userDao;
-    
+    public UsuarioHttp svc;
+
     @EJB
-    public GruposFacade groupDao;
-    
+    public ComentarioSvc commentSvc;
+
     @EJB
-    public Creatable creatableObj;
-    
+    public GrupoHttp groupHttp;
+
     @EJB
-    public Searchable searchableObj;
-    
+    public ComentarioHttp commentHttp;
+
     @EJB
-    public Editable editableObj;
-    
+    public GruposSvc groupSvc;
+
     private final static String SUCCESS = "/nuevoPerfil.jsp";
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,6 +70,7 @@ public class PerfilUsuarioControlador extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -83,68 +83,59 @@ public class PerfilUsuarioControlador extends HttpServlet {
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             List<Grupos> otherGroups;
             List<Usuario> otrosUsuarios;
-            
-            if (request.getSession().getAttribute("gruposExistentes") == null) {
-                //añado los grupos existentes y los usuarios existentes a la sesion si no están
-                otherGroups = groupDao.GroupList(user);
-                request.getSession().setAttribute("gruposExistentes", otherGroups);
-                otrosUsuarios = userDao.findOtherUsers(user);
-                request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
-            } else {
-                //si ya están en la sesión solo los coge
-                otherGroups = (List<Grupos>) request.getSession().getAttribute("gruposExistentes");
-                otrosUsuarios = (List<Usuario>) request.getSession().getAttribute("usuariosExistentes");
-            }
+//
+//            //añado los grupos existentes y los usuarios existentes a la sesion si no están
+//            otherGroups = groupHttp.encontrarOtrosGrupos(request);
+//            request.setAttribute("gruposExistentes", otherGroups);
+//            otrosUsuarios = svc.encontrarOtrosUsuarios(request);
+//            request.setAttribute("usuariosExistentes", otrosUsuarios);
 
-            request.getSession().setAttribute("usuariosExistentes", otrosUsuarios);
             //AÑADIR AMIGO
-            if (request.getParameter("nuevoAmigo") != null && !request.getParameter("nuevoAmigo").isEmpty()) {
-                Amistades newRelationship = svc.nuevoAmigo(user, request.getParameter("nuevoAmigo"));
-                creatableObj.create(user, newRelationship);
-                editableObj.changeList(otrosUsuarios, newRelationship.getIdUsuario2(), 2);
-                
+            if (request.getParameter("newFriendEmail") != null && !request.getParameter("newFriendEmail").isEmpty()) {
+                svc.nuevoAmigoPorEmail(request);
+                request.getSession().removeAttribute("usuario");
+
             //AÑADIR POST o COMENTARIO
             }
-            if (request.getParameter("privacidad") != null &&
-                    !request.getParameter("privacidad").isEmpty()) {
+            if (request.getParameter("privacidad") != null
+                    && !request.getParameter("privacidad").isEmpty()) {
                 //si esto no es null es que se va a crear un comentario de grupo
                 int idGroup = Integer.parseInt(request.getParameter("privacidad"));
-                String content = request.getParameter("contenido");
                 // AÑADIR POST
                 if (idGroup == 0) {
-                    creatableObj.buildPost(user, content);
-                //AÑADIR COMENTARIO
+                    postSvc.crearPost(request);
+                    request.getSession().removeAttribute("usuario");
+                    //AÑADIR COMENTARIO
                 } else {
-                    creatableObj.buildComment(user, content, idGroup); 
+                    user = commentHttp.construirComentario(request);
+                    request.getSession().removeAttribute("usuario");
                 }
                 //CREAR UN GRUPO Y HACERSE MIEMBRO
             }
-             if (request.getParameter("nombregrupo") != null &&
-                     !request.getParameter("nombregrupo").isEmpty()) {
-                String groupName = request.getParameter("nombregrupo");
-                creatableObj.buildGroup(user, groupName);
+            if (request.getParameter("groupNameToCreate") != null
+                    && !request.getParameter("groupNameToCreate").isEmpty()) {
+                user = groupHttp.construirGrupo(request);
+                request.getSession().removeAttribute("usuario");
             } //UNIRSE A UN GRUPO EXISTENTE
-             if (request.getParameter("grupoAUnirse") != null &&
-                     !request.getParameter("grupoAUnirse").isEmpty()) {
-                 int idGroup = Integer.parseInt(request.getParameter("grupoAUnirse"));
-                 Grupos groupSelected = (Grupos) searchableObj.search(otherGroups, idGroup);
-                 editableObj.changeGroup(groupSelected, user, 1);
-                 //elimina el grupo de la lista de los grupos a los que no pertenece el usuario
-                 editableObj.changeList(otherGroups, groupSelected, 2);
-                
-             } //CREAR AMISTAD CON OTRO USUARIO EXISTENTE (SIN BUSCAR)
-             if (request.getParameter("otroUsuario") != null && 
-                     !request.getParameter("otroUsuario").isEmpty()) {
-                 int idUsuario = Integer
-                         .parseInt(request.getParameter("otroUsuario"));
-                 
-                 Usuario newFriend = (Usuario) searchableObj
-                         .search(otrosUsuarios, idUsuario);
-                 
-                 creatableObj.buildRelationship(user, newFriend);
-                 editableObj.changeList(otrosUsuarios, newFriend, 2);
-             }
+            if (request.getParameter("idGroupToFollow") != null
+                    && !request.getParameter("idGroupToFollow").isEmpty()) {
+                user = groupHttp.unirseAGrupo(request);
+                request.getSession().removeAttribute("usuario");
 
+            } //CREAR AMISTAD CON OTRO USUARIO EXISTENTE (SIN BUSCAR)
+            if (request.getParameter("idNewFriend") != null
+                    && !request.getParameter("idNewFriend").isEmpty()) {
+
+                svc.nuevoAmigoYaExistente(request);
+                request.getSession().removeAttribute("usuario");
+            }
+
+            request.getSession().setAttribute("usuario", user);
+            //añado los grupos existentes y los usuarios existentes a la sesion si no están
+            otherGroups = groupHttp.encontrarOtrosGrupos(request);
+            request.setAttribute("gruposExistentes", otherGroups);
+            otrosUsuarios = svc.encontrarOtrosUsuarios(request);
+            request.setAttribute("usuariosExistentes", otrosUsuarios);
             request.getRequestDispatcher(SUCCESS).forward(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -160,6 +151,5 @@ public class PerfilUsuarioControlador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
+
 }

@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -42,21 +42,18 @@ public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idPost")
+    @Column(name = "id_post")
     private Integer idPost;
     @Lob
-    @Size(max = 65535)
+    @Size(max = 2147483647)
     @Column(name = "contenido")
     private String contenido;
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
-    @ManyToOne
-    private Usuario idUsuario;
-    @JoinColumn(name = "privacidad", referencedColumnName = "id")
-    @ManyToOne
-    private Privacidad privacidad;
+    @JoinColumn(name = "id_publicador", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Usuario idPublicador;
 
     public Post() {
     }
@@ -89,20 +86,12 @@ public class Post implements Serializable {
         this.fecha = fecha;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
+    public Usuario getIdPublicador() {
+        return idPublicador;
     }
 
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Privacidad getPrivacidad() {
-        return privacidad;
-    }
-
-    public void setPrivacidad(Privacidad privacidad) {
-        this.privacidad = privacidad;
+    public void setIdPublicador(Usuario idPublicador) {
+        this.idPublicador = idPublicador;
     }
 
     @Override
@@ -131,4 +120,3 @@ public class Post implements Serializable {
     }
     
 }
-

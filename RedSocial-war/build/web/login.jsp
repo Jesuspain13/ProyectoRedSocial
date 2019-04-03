@@ -42,14 +42,14 @@
                 <label>Usuario:</label>
                 <div class="group">
                     <i class="fas fa-user"></i>
-                    <input name ="email" type="text" class="form-control" placeholder="Usuario" required="required" />
+                    <input name ="userEmail" type="text" class="form-control" placeholder="Usuario" required="required" />
                 </div>
             </div>
             <div class=" w3l-form-group">
                 <label>Contraseña:</label>
                 <div class="group">
                     <i class="fas fa-unlock"></i>
-                    <input name="password" type="password" class="form-control" placeholder="Contraseña" required="required" />
+                    <input name="userPassword" type="password" class="form-control" placeholder="Contraseña" required="required" />
                 </div>
             </div>
             <div class="forgot">

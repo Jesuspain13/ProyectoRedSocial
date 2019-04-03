@@ -6,12 +6,16 @@
 package redSocial.svc.interfaces;
 
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author Jesus
  */
+@Local
 public interface Searchable {
     
-    public Object search(List listOfSomething, int id);
+    
+    public Object findInListById(Integer id, List listToSearch);
+    
 }

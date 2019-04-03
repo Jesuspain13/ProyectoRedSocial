@@ -6,20 +6,22 @@
 package redSocial.servlet;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import redSocial.dao.AmistadesFacade;
-import redSocial.dao.UsuarioFacade;
-import redSocial.modelos.Amistades;
+import redSocial.dao.UsuarioFacadeLocal;
 import redSocial.modelos.Usuario;
-import redSocial.svc.interfaces.Deletable;
-import redSocial.svc.interfaces.Upgradeable;
+import redSocial.svc.interfaces.entities.ComentarioSvc;
+import redSocial.svc.interfaces.entities.GruposSvc;
+import redSocial.svc.interfaces.entities.PostSvc;
+import redSocial.svc.interfaces.entities.UsuarioSvc;
+import svc.manejoHttpRequest.ComentarioHttp;
+import svc.manejoHttpRequest.GrupoHttp;
+import svc.manejoHttpRequest.PostHttp;
+import svc.manejoHttpRequest.UsuarioHttp;
 
 /**
  *
@@ -30,17 +32,32 @@ public class BorrarControlador extends HttpServlet {
 
     
     @EJB
-    private UsuarioFacade dao;
+    private UsuarioFacadeLocal dao;
+    
     
     @EJB
-    private AmistadesFacade amistadesDao;
-    
-    @EJB 
-    private Deletable deletableObj; 
+    private UsuarioSvc userSvc;
     
     @EJB
-    private Upgradeable editableObj;
+    private PostSvc postSvc;
     
+    @EJB
+    private ComentarioSvc commentSvc;
+    
+    @EJB
+    private GruposSvc groupSvc;
+    
+    @EJB
+    private GrupoHttp groupHttp;
+    
+    @EJB
+    private UsuarioHttp userHttp;
+    
+    @EJB
+    private PostHttp postHttp;
+    
+    @EJB
+    private ComentarioHttp commentHttp;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -71,34 +88,47 @@ public class BorrarControlador extends HttpServlet {
         try {
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             //dejar de seguir a un amigo
-            if (request.getParameter("amigoABorrar") != null) {
-                int idAmistadABorrar = Integer
-                        .parseInt(request.getParameter("amigoABorrar"));
-                
-                deletableObj.delete(user, idAmistadABorrar, 1);
+            if (request.getParameter("UnfollowEverybody") != null) {
+                user = userHttp.borrarTodo(request);
+            }
+            if (request.getParameter("friendToUnfollow") != null) {
+                user = (Usuario) userHttp.dejarDeSeguir(request);
+//               user = (Usuario) userSvc.delete(request);
+//                int idAmistadABorrar = Integer
+//                        .parseInt(request.getParameter("friendToUnfllow"));
+//                
+//                deletableObj.delete(user, idAmistadABorrar, 1);
                 
             } // borrar un post nuestro
-            else if (request.getParameter("borrarPost") != null) {
-                int idPostABorrar = Integer
-                        .parseInt(request.getParameter("borrarPost"));
-                
-                deletableObj.delete(user, idPostABorrar, 2);
+            else if (request.getParameter("postToDelete") != null) {
+                user = (Usuario) postHttp.borrarPost(request);
+//                user = (Usuario) postSvc.delete(request);
+//                int idPostABorrar = Integer
+//                        .parseInt(request.getParameter("postToDelete"));
+//                
+//                deletableObj.delete(user, idPostABorrar, 2);
                 
             } // borrar un comentario nuestro de un grupo en el que estamos
-            else if (request.getParameter("comentarioABorrar") != null && 
-                    !request.getParameter("comentarioABorrar").isEmpty()) {
-                int idCommentToDelete = Integer
-                        .parseInt(request.getParameter("comentarioABorrar"));
-                deletableObj.delete(user, idCommentToDelete, 4);
+            if (request.getParameter("commentToDelete") != null && 
+                    !request.getParameter("commentToDelete").isEmpty()) {
+                user = (Usuario) commentHttp.borrarComentario(request);
+//                user = (Usuario) commentSvc.delete(request);
+//                int idCommentToDelete = Integer
+//                        .parseInt(request.getParameter("comentarioABorrar"));
+//                deletableObj.delete(user, idCommentToDelete, 4);
             } // dejar de seguir a un grupo
-            else if (request.getParameter("idGrupoDejarSeguir") != null && 
-                    !request.getParameter("idGrupoDejarSeguir").isEmpty()) {
-                int idGroupToUnfollow = Integer
-                        .parseInt(request.getParameter("idGrupoDejarSeguir"));
-                deletableObj.delete(user, idGroupToUnfollow, 3);
+            if (request.getParameter("idGroupToUnfollow") != null && 
+                    !request.getParameter("idGroupToUnfollow").isEmpty()) {
+                
+                groupHttp.salirDeGrupo(request);
+                //groupSvc.unfollowGroup(request);
+//                int idGroupToUnfollow = Integer
+//                        .parseInt(request.getParameter("idGrupoDejarSeguir"));
+//                deletableObj.delete(user, idGroupToUnfollow, 3);
             }
 
-            
+            request.getSession().removeAttribute("usuario");
+            request.getSession().setAttribute("usuario", user);
             request.getRequestDispatcher("PerfilUsuario").forward(request, response);
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -115,26 +145,5 @@ public class BorrarControlador extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private static void actualizarAmigosBorrados(Usuario user, Amistades amistadABorrar) {
-        List<Amistades> amistadesAntiguas = user.getAmistadesList();
-        amistadesAntiguas.remove(amistadABorrar);
-        user.setAmistadesList(amistadesAntiguas);
-    }
-    
-    private static Amistades encontrarAmistad(Usuario user, int idAmistad) {
-        
-        Iterator amistades = user.getAmistadesList().iterator();
-        Amistades res = null;
-        boolean encontrado = false;
-        Amistades iteradorAmistad;
-        while(amistades.hasNext() && !encontrado) {
-            iteradorAmistad = (Amistades) amistades.next();
-            if (iteradorAmistad.getAmistadesid() == idAmistad) {
-                res = iteradorAmistad;
-                encontrado = true;
-                
-            }
-        }
-        return res;
-    }
+   
 }

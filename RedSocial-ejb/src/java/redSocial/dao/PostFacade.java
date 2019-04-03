@@ -15,7 +15,7 @@ import redSocial.modelos.Post;
  * @author Jesus
  */
 @Stateless
-public class PostFacade extends AbstractFacade<Post> {
+public class PostFacade extends AbstractFacade<Post> implements PostFacadeLocal {
 
     @PersistenceContext(unitName = "RedSocial-ejbPU")
     private EntityManager em;
