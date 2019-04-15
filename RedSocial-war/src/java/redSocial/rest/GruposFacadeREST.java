@@ -5,10 +5,12 @@
  */
 package redSocial.rest;
 
+import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.Map;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,29 +19,63 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import redSocial.dao.UsuarioFacadeLocal;
+import redSocial.modelos.EncapsularInfoPost;
 import redSocial.modelos.Grupos;
+import redSocial.modelos.Usuario;
+import redSocial.svc.interfaces.entities.GruposSvc;
 
 /**
  *
  * @author Jesus
  */
-@Stateless
-@Path("redsocial.modelos.grupos")
-public class GruposFacadeREST {
+@javax.enterprise.context.RequestScoped
 
+@Path("groups")
+public class GruposFacadeREST {
+    @Inject
+    private UsuarioFacadeLocal userDao;
+    
+    @Inject
+    private GruposSvc groupSvc;
+    
 
     @POST
+    @Path("creategroup")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Grupos entity) {
-        //super.create(entity);
+    public Response create(EncapsularInfoPost entity) {
+        try {
+            Usuario user = userDao.find(entity.getIdUsuario());
+            Grupos grupo = entity.getGrupo();
+            
+            //da error
+            List<Usuario> list = new ArrayList();
+            list.add(user);
+            grupo.setUsuarioList(list);
+            groupSvc.buildGroup(grupo, user);
+            Map<String,String> result = new HashMap<String, String>();
+            Gson gson = new Gson();
+            GenericEntity resultVoid = new GenericEntity("All ok", String.class);
+            return Response.ok().entity(gson.toJson(result)).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_GATEWAY).build();
+        }
+        
     }
 
-    @PUT
-    @Path("{id}")
+    @POST
+    @Path("followgroup")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Grupos entity) {
-        //super.edit(entity);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response followGroup(EncapsularInfoPost entity) {
+        Usuario user = userDao.find(entity.getIdUsuario());
+        groupSvc.followGroup(entity.getGrupo().getIdGrupo(), user);
+        Map<String,String> result = new HashMap<String, String>();
+        Gson gson = new Gson();
+        return Response.ok().entity(gson.toJson(result)).build();
     }
 
     @DELETE

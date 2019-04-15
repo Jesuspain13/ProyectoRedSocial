@@ -219,7 +219,9 @@ public class Usuario implements Serializable {
             u.setGruposList(null);
             u.setUsuarioList(null);
             u.setComentarioGrupoList(null);
-            u.setPostList(null);
+            for (Post p: u.getPostList()) {
+                p.setIdPublicador(null);
+            }
         }
         for (Post p: user.getPostList()) {
             p.setIdPublicador(null);
@@ -246,6 +248,18 @@ public class Usuario implements Serializable {
         }
         String userJson = gson.toJson(user);
         return userJson;
+    }
+    
+    public static List<Usuario> friendsToJson(List<Usuario> listOfNotMyFriends) {
+        //Gson gson = new Gson();
+        for (Usuario u: listOfNotMyFriends) {
+            u.setUsuarioList(null);
+            u.setPostList(null);
+            u.setComentarioGrupoList(null);
+            u.setGruposList(null);
+        }
+        //String suggedtedFriendsJson = gson.toJson(listOfNotMyFriends);
+        return listOfNotMyFriends;
     }
     
 }

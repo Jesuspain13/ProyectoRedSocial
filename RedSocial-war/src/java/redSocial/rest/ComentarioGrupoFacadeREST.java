@@ -6,9 +6,7 @@
 package redSocial.rest;
 
 import java.util.List;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,23 +17,27 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import redSocial.modelos.ComentarioGrupo;
+import redSocial.svc.interfaces.entities.ComentarioSvc;
 import redSocial.svc.interfaces.entities.UsuarioSvc;
 
 /**
  *
  * @author Jesus
  */
-@Stateless
+@javax.enterprise.context.RequestScoped
 @Path("redsocial.modelos.comentariogrupo")
 public class ComentarioGrupoFacadeREST {
 
-    @EJB
+    @Inject
     private UsuarioSvc userSvc;
+    
+    @Inject
+    private ComentarioSvc commentSvc;
 
     @POST
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     public void create(ComentarioGrupo entity) {
-        //super.create(entity);
+        
     }
 
     @PUT

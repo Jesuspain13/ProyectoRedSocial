@@ -37,8 +37,9 @@ public class GruposSvcImpl implements GruposSvc, Searchable {
     public Usuario buildGroup(Grupos groupCreated, Usuario user/*HttpServletRequest request, int toDo*/) throws Exception {
         try {
 
-            groupDao.create(groupCreated);
+            //groupDao.create(groupCreated);
             user.getGruposList().add(groupCreated);
+            userSvc.updateUser(user);
             
             return user;
         } catch (Exception ex) {
@@ -50,8 +51,9 @@ public class GruposSvcImpl implements GruposSvc, Searchable {
     public Usuario followGroup(int idGroupToFollow, Usuario user) {
         Grupos groupToFollow = groupDao.find(idGroupToFollow);
         groupToFollow.getUsuarioList().add(user);
-        groupDao.edit(groupToFollow);
+        //groupDao.edit(groupToFollow);
         user.getGruposList().add(groupToFollow);
+        userSvc.updateUser(user);
         return user;
     }
     

@@ -5,6 +5,7 @@
  */
 package redSocial.modelos;
 
+import com.google.gson.Gson;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -141,6 +142,29 @@ public class Grupos implements Serializable {
     @Override
     public String toString() {
         return "redSocial.modelos.Grupos[ idGrupo=" + idGrupo + " ]";
+    }
+    
+    public String toJson(Grupos group) {
+        Gson gson = new Gson();
+                
+        group.setGroupSize();
+        group.setUsuarioList(null);
+        group.setComentarioGrupoList(null);
+        String jsonGroups = gson.toJson(group);
+        return jsonGroups;
+        
+    }
+    
+    public static List<Grupos> prepareToJson(List<Grupos> listOfGroupsWhereIAmNot) {
+        //Gson gson = new Gson();
+        for (Grupos group: listOfGroupsWhereIAmNot) { 
+            group.setGroupSize();
+            group.setUsuarioList(null);
+            group.setComentarioGrupoList(null);
+        }
+        //String jsonGroups = gson.toJson(group);
+        return listOfGroupsWhereIAmNot;
+        
     }
     
 }

@@ -29,11 +29,10 @@ public class UsuarioSvcImpl implements UsuarioSvc, Deletable {
 
 
     @Override
-    public void buildUser(Usuario user) throws Exception {
+    public Usuario buildUser(Usuario user) throws Exception {
         try {
-
             userDao.create(user);
-        
+            return userDao.findByEmailAndPass(user.getEmail(), user.getPassword());
         } catch (Exception ex) {
             throw new Exception(ex);
         }    

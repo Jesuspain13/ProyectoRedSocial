@@ -22,7 +22,7 @@ public interface UsuarioSvc extends Deletable {
      * @param request petición post con los datos del usuario
      * @throws Exception 
      */
-    public void buildUser( Usuario userCreated) throws Exception;
+    public Usuario buildUser( Usuario userCreated) throws Exception;
     
     public void updateUser(Usuario userToUpdate);
     

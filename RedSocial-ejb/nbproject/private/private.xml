@@ -7,19 +7,19 @@
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/implementations/entities/PostSvcImpl.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/dao/UsuarioFacade.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/modelos/Usuario.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/implementations/entities/ComentarioSvcImpl.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/dao/ComentarioGrupoFacade.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/svc/interfaces/entities/UsuarioSvc.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/manejoHttpRequest/GrupoHttp.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/implementations/entities/UsuarioSvcImpl.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/modelos/Grupos.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/conf/MANIFEST.MF</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/manejoHttpRequest/ComentarioHttp.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/manejoHttpRequest/PostHttp.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/modelos/Post.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/svc/interfaces/Searchable.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/modelos/EncapsularInfoPost.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/dao/PostFacadeLocal.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/implementations/entities/GruposSvcImpl.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/dao/UsuarioFacadeLocal.java</file>
             <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/svc/manejoHttpRequest/UsuarioHttp.java</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/conf/persistence.xml</file>
-            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/modelos/ComentarioGrupo.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/svc/interfaces/entities/PostSvc.java</file>
+            <file>file:/C:/Users/Jesus/Documents/NetBeansProjects/PROYECTO/RedSocial/RedSocial/RedSocial-ejb/src/java/redSocial/svc/interfaces/entities/GruposSvc.java</file>
         </group>
     </open-files>
 </project-private>
